@@ -32,7 +32,7 @@ def choose_loser(team_1, team_2):
 def pick_em():
     args = parse_args()
 
-    winner, loser = choose_winner(args.team_1, args.team_2)
+    winner, loser = choose_loser(args.team_1, args.team_2)
     print 'Winner is {0}, loser is {1}'.format(winner, loser)
 
 

@@ -13,7 +13,7 @@ def parse_args():
     return parser.parse_args()
 
 
-def choose_winner(team_1, team_2):
+def choose_loser(team_1, team_2):
     # get shuffled team picks list, weighted by team rank
     picks = []
     for i in range(int(team_1)):
@@ -24,8 +24,8 @@ def choose_winner(team_1, team_2):
 
     # pick winner randomly from team picks list
     index = random.randint(0, len(picks)-1)
-    winner = picks[index]
-    loser = team_1 if winner == team_2 else team_2
+    loser = picks[index]
+    winner = team_1 if loser == team_2 else team_2
     return winner, loser
 
 

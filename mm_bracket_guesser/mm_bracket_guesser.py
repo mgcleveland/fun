@@ -1,19 +1,9 @@
 #!/usr/bin/env python
 
-import argparse
 import random
 
 
-def parse_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-1', dest='team_1',
-                        required=True, help='Team 1 rank')
-    parser.add_argument('-2', dest='team_2',
-                        required=True, help='Team 2 rank')
-    return parser.parse_args()
-
-
-def choose_loser(team_1, team_2):
+def choose_winner_loser(team_1, team_2):
     # get shuffled team picks list, weighted by team rank
     picks = []
     for i in range(int(team_1)):
@@ -29,11 +19,46 @@ def choose_loser(team_1, team_2):
     return winner, loser
 
 
-def pick_em():
-    args = parse_args()
+def get_starting_bracket():
+    bracket = []
+    sub_bracket = [(1, 16), (8, 9), (5, 12), (4, 13), (6, 11), (3, 14), (7, 10),
+                   (2, 15)]
+    for i in range(4):
+        bracket.append(sub_bracket)
+    return bracket
 
-    winner, loser = choose_loser(args.team_1, args.team_2)
-    print 'Winner is {0}, loser is {1}'.format(winner, loser)
+
+def group(lst, n):
+    for i in range(0, len(lst), n):
+        val = lst[i:i+n]
+        if len(val) == n:
+            yield tuple(val)
+
+
+def solve_sub_bracket(bracket):
+    winners = []
+    print bracket
+    for i in bracket:
+        winner, loser = choose_winner_loser(i[0], i[1])
+        winners.append(winner)
+
+    if len(winners) == 1:
+        print winners
+    else:
+        next_bracket = list(group(winners, 2))
+        if len(next_bracket) > 0:
+            return solve_sub_bracket(next_bracket)
+    return
+
+
+def solve_bracket(main_bracket):
+    for bracket in main_bracket:
+        solve_sub_bracket(bracket)
+
+
+def pick_em():
+    starting_bracket = get_starting_bracket()
+    solve_bracket(starting_bracket)
 
 
 if __name__ == '__main__':
